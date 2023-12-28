@@ -67,9 +67,7 @@ input[type="submit"], button {
         width: auto;
     }
 
-    #content-related {
-        margin-right: -290px;
-    }
+
 
     .colSM #content-related {
         margin-left: -290px;

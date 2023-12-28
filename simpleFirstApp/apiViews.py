@@ -11,6 +11,7 @@ def getSubjects(request):
     subject_obj=serializers.serialize('python',subject)
     return JsonResponse(subject_obj,safe=False)
 
+
 @csrf_exempt
 def savestudent(request):
     id=request.POST.get('id','')

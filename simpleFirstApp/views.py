@@ -202,24 +202,34 @@ def SendPlainEmail(request):
     message=request.POST.get('message','')
     subject=request.POST.get('subject','')
     mail_id=request.POST.get('email','')
-    email=EmailMessage(subject,message,EMAIL_HOST_USER,[mail_id])
-    email.content_subtype='html'
-    email.send()
+    mail_to = [mail_id]
+    send_mail(subject, message, settings.EMAIL_HOST_USER, mail_to)
+    # email=EmailMessage(subject,message,EMAIL_HOST_USER,[mail_id])
+    # email.content_subtype='html'
+    # email.send()
     return HttpResponse("Sent")
 
 def send_mail_plain_with_stored_file(request):
     message=request.POST.get('message','')
     subject=request.POST.get('subject','')
     mail_id=request.POST.get('email','')
-    email=EmailMessage(subject,message,EMAIL_HOST_USER,[mail_id])
-    email.content_subtype='html'
+    mail_to = [mail_id]
+    # email=EmailMessage(subject,message,EMAIL_HOST_USER,[mail_id])
+    # email.content_subtype='html'
 
     file=open("README.md","r")
     file2=open("manage.py","r")
-    email.attach("README.md",file.read(),'text/plain')
-    email.attach("manage.py",file2.read(),'text/plain')
 
+    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, mail_to)
+    email.attach("README.md", file.read(), 'text/plain')  # Присоединить файл README.md
+    #email.attach("manage.py", file2.read(), 'text/plain')  # Присоединить файл manage.py
     email.send()
+
+    # send_mail(subject, message, settings.EMAIL_HOST_USER, mail_to)
+    # email.attach("README.md",file.read(),'text/plain')
+    # email.attach("manage.py",file2.read(),'text/plain')
+    #
+    # email.send()
     return HttpResponse("Sent")
 
 
@@ -227,10 +237,13 @@ def send_mail_plain_with_file(request):
     message = request.POST.get('message', '')
     subject = request.POST.get('subject', '')
     mail_id = request.POST.get('email', '')
-    email = EmailMessage(subject, message, EMAIL_HOST_USER, [mail_id])
-    email.content_subtype = 'html'
+    mail_to = [mail_id]
+
+    # email = EmailMessage(subject, message, EMAIL_HOST_USER, [mail_id])
+    # email.content_subtype = 'html'
 
     file = request.FILES['file']
+    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, mail_to)
     email.attach(file.name, file.read(), file.content_type)
 
     email.send()
